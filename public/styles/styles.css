@@ -36,6 +36,6 @@ h1{
 @media screen and (max-width: 991px) {
   .container { display: flex; flex-flow: column; }
   .game-canvas { order: 1; }
-  #recent-players { order: 2; width: 50%;}
-  #high-scores { order: 3; width: 50%}
+  #recent-players { order: 2; width: 100%;}
+  #high-scores { order: 3; width: 100%}
 }
