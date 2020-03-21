@@ -16,6 +16,15 @@ h1{
   text-align: center;
 }
 
+#recent-players{
+  float: left;
+}
+
+#high-scores{
+  float: right;
+}
+
+
 #gameCanvas{
   display: block;
   width: 100%;
@@ -24,9 +33,9 @@ h1{
   margin-right: auto;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 991px) {
   .container { display: flex; flex-flow: column; }
   .game-canvas { order: 1; }
-  #recent-players { order: 2;  width: 50%;}
+  #recent-players { order: 2; width: 50%;}
   #high-scores { order: 3; width: 50%}
 }
