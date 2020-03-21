@@ -115,10 +115,22 @@ module.exports = {
                 };
             };
         };
+        newBarrier = [ans[0], ans[1]];
+        ans.shift();
+        ans.shift();
+        console.log("ans = " + ans);
+        while(ans.length && ans[0] === 0){
+            newBarrier[1]++;
+            ans.shift();
+        };
+        while(ans.length && ans[ans.length-1] === 0){
+            ans.pop();
+        };
+        console.log("Now, ans = " + ans + "\n");
         if(barrierExists || newExists){
             throw "There should be an even number of 'worldedge' barriers in each array of a barrierArray."
         };
-        return ans;
+        return newBarrier.concat(ans);
     },
 
     addBarrier: function(newBarrierX,newBarrierY){
@@ -162,13 +174,19 @@ module.exports = {
                         break;
                     };
                 };
-                barriers.splice(index,0,newBarrier);
+                var barrier = [order,0,0]
+                barriers.splice(index,0,barrier);
             }
             else{
                 var barrier = barriers[index];
-                barrier = module.exports.addWalls(barrier,newBarrier);
-                barriers.splice(index,1,barrier);
             };
+            barrier = module.exports.addWalls(barrier,newBarrier);
+            if(barrier.length > 2){
+                barriers.splice(index,1,barrier);
+            }
+            else{
+                barriers.splice(index,1);
+            }
             return barriers;
         };
 
