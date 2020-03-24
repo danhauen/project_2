@@ -12,7 +12,8 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Routes
-require("./routes/apiRoutes")(app);
+require("./routes/activeApiRoute")(app);
+require("./routes/barrierApiRoute")(app);
 require("./routes/htmlRoutes")(app);
 
 var syncOptions = { force: false };
@@ -33,5 +34,8 @@ db.sequelize.sync(syncOptions).then(function() {
     );
   });
 });
+
+var level0 = require("./world/level0");
+level0();
 
 module.exports = app;

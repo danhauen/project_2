@@ -8,27 +8,18 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.TEXT,
             allowNull: false,
         },
-        weight: {
+        armor: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        volume: {
+        weapon: {
             type: DataTypes.INTEGER,
             allownull: false,
         },
-        value: {
+        HPTotal: {
             type: DataTypes.INTEGER,
             allownull: false,
         },
-        arcaneValue: {
-            type: DataTypes.INTEGER,
-            allownull: false,
-        },
-        useWord: {
-            type: DataTypes.STRING,
-            allownull: false,
-        }
     });
     return items;
 };
-    
