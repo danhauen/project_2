@@ -27,4 +27,12 @@ module.exports = function(app) {
       res.json(dbdefaultCharacter);
     });
   });
+
+  //post player name to database
+
+  //get recent players
+
+  //get high scores 
+
+
 };
