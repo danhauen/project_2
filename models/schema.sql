@@ -10,3 +10,5 @@ CREATE DATABASE iddb;
 DROP DATABASE IF EXISTS activeObjectsdb;
 CREATE DATABASE activeObjectsdb;
 
+DROP DATABASE IF EXISTS playersdb;
+create DATABASE playersdb;
