@@ -27,7 +27,7 @@ $(document).ready(function(){
                 API.currentKey().then(function(res){
                     console.log(res.key);
                     if (res.key === "") {
-                        draw();
+                        showMap();
                         clearInterval(acknowledged);
                     };
                     if(giveUp < 0){
@@ -367,18 +367,21 @@ $(document).ready(function(){
 
     var barrierX = [[],[],[],[],[],[],[]];
     var barrierY = [[],[],[],[],[],[],[]];
-    API.refreshBarrier().then(function(res){
-        for(i in res){
-            var barrier = Object.values(res[i]).slice(1,18);
-            var index = barrier[0];
-            barrierX[index + 3] = barrier.slice(1,9);
-            barrierY[index + 3] = barrier.slice(9);
-        };
-        draw();
-    });
+    function showMap(){
+        API.refreshBarrier().then(function(res){
+            for(i in res){
+                var barrier = Object.values(res[i]).slice(1,18);
+                var index = barrier[0];
+                barrierX[index + 3] = barrier.slice(1,9);
+                barrierY[index + 3] = barrier.slice(9);
+            };
+            draw();
+        });
+    };
 
     var activeKeys = [];
     $("html").keydown(function(key){
+        key.preventDefault();
         var key = key.originalEvent.key;
         if(["Meta","Alt","Control","CapsLock","Tab","Shift"].indexOf(key) < 0){
             if(activeKeys.indexOf(key) < 0){
@@ -402,4 +405,6 @@ $(document).ready(function(){
             };
         };
     });
+
+    showMap();
 });
