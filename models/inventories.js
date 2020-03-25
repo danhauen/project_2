@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-    var id = sequelize.define("Id list", {
+    var inventories = sequelize.define("inventories", {
         itemId: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -12,8 +12,6 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-
-      });
-      return id;
-      
-    };
+    });
+    return inventories;
+};

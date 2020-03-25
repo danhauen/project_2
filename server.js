@@ -13,9 +13,11 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Routes
-require("./routes/activeApiRoute.js")(app);
+require("./routes/activeApiRoute")(app);
+require("./routes/barrierApiRoute")(app);
 require("./routes/charApiRoutes.js")(app)
-require("./routes/htmlRoutes.js")(app);
+require("./routes/inputApiRoute.js")(app)
+require("./routes/htmlRoutes")(app);
 require("./routes/playerRoute.js")(app);
 
 var syncOptions = { force: false };
@@ -36,5 +38,8 @@ db.sequelize.sync(syncOptions).then(function() {
     );
   });
 });
+
+var init = require("./world/init");
+init();
 
 module.exports = app;

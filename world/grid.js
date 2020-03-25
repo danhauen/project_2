@@ -118,7 +118,6 @@ module.exports = {
         newBarrier = [ans[0], ans[1]];
         ans.shift();
         ans.shift();
-        console.log("ans = " + ans);
         while(ans.length && ans[0] === 0){
             newBarrier[1]++;
             ans.shift();
@@ -126,7 +125,6 @@ module.exports = {
         while(ans.length && ans[ans.length-1] === 0){
             ans.pop();
         };
-        console.log("Now, ans = " + ans + "\n");
         if(barrierExists || newExists){
             throw "There should be an even number of 'worldedge' barriers in each array of a barrierArray."
         };
@@ -247,6 +245,72 @@ module.exports = {
         };
 
         this.addBarrier(newBarrierX,newBarrierY);
+    },
+
+    findBarrier: function(x,y,vert){
+        if(typeof x !== "number" || typeof y !== "number"){
+            throw "Grid coordinates are numbers.";
+        }
+        else if(x !== Math.floor(x) || y !== Math.floor(y)){
+            throw "Grid coordinates are integers.";
+        };
+        if(typeof vert !== "boolean"){
+            throw "Are you looking for a vertical or a horizontal barrier?";
+        };
+        if(vert){
+            var indeces = [];
+            for(i in this.barrierX){
+                var barrier = this.barrierX[i];
+                indeces.push(barrier[0]);
+            };
+            y = indeces.indexOf(y);
+            if(y < 0){
+                return null;
+            }
+            else{
+                var barrier = this.barrierX[y];
+                if(x < barrier[1]){
+                    return null;
+                }
+                else{
+                    x -= barrier[1];
+                    x += 2;
+                    if(x >= barrier.length){
+                        return null;
+                    }
+                    else{
+                        return barrier[x];
+                    };
+                };
+            };
+        }
+        else{
+            var indeces = [];
+            for(i in this.barrierY){
+                var barrier = this.barrierY[i];
+                indeces.push(barrier[0]);
+            };
+            x = indeces.indexOf(x);
+            if(x < 0){
+                return null;
+            }
+            else{
+                var barrier = this.barrierY[x];
+                if(y < barrier[1]){
+                    return null;
+                }
+                else{
+                    y -= barrier[1];
+                    y += 2;
+                    if(y >= barrier.length){
+                        return null;
+                    }
+                    else{
+                        return barrier[y];
+                    };
+                };
+            };
+        };
     },
 };
 

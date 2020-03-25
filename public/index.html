@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>InterestQuest</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+    <link type=text/css rel=stylesheet href="./styles/styles.css">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js" 
+      integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src= "./js/index.js"></script>
+    <script src= "./js/screen_control.js"></script>
+  </head>
+
+  <body>
+    <div class="jumbotron jumbotron-fluid" id= "game-title">
+      <div class="container">
+        <h1 class="display-4">InterestQuest</h1>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+
+      <div class="row" id="row1">
+        <div class="col-lg" id="game-canvas">
+          <div class="container-fluid" id="screen">
+            <canvas id="gameCanvas" width=498 height=498> </canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class= "row">
+        <div class="container-fluid" id="msg-container">
+          <div class= "col-lg" id="messages"></div>
+        </div>
+      </div>
+      
+      <div class= "row">
+        <div class="col-sm panel"  id="recent-players"> Recent Players </div>
+        <div class="col-sm panel" id="high-scores"> High Scores </div>
+      </div>
+
+    </div>
+  
+  </body>
+</html>

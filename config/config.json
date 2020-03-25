@@ -1,15 +1,15 @@
 {
   "development": {
     "username": "root",
-    "password": "357CoachedLGD!",
-    "database": "exampledb",
+    "password": "password",
+    "database": "gameWhichMayBeNameddb",
     "host": "localhost",
     "dialect": "mysql",
     "port": 3306
   },
   "test": {
     "username": "root",
-    "password": "357CoachedLGD!",
+    "password": "password",
     "database": "testdb",
     "host": "localhost",
     "dialect": "mysql",

@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-    var item = sequelize.define("Items", {
+    var items = sequelize.define("items", {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -21,15 +21,15 @@ module.exports = function(sequelize, DataTypes) {
             allownull: false,
         },
         arcaneValue: {
-          type: DataTypes.INTEGER,
-          allownull: false,
+            type: DataTypes.INTEGER,
+            allownull: false,
         },
         useWord: {
             type: DataTypes.STRING,
             allownull: false,
         }
-      });
-      return item;
-    };
+    });
+    return items;
+};
   
     
