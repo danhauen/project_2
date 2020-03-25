@@ -125,16 +125,8 @@ $(document).ready(function(){
     };
 
     function lightLeft(x,y){
-        var above = false;
-        var below = false;
         if(barrierX[y+3][x+4] !== 0){
-            if(y < 0){
-                above = true;
-            }
-            else if(y > 0){
-                below = true;
-            };
-            vertWall(x+1,y,above,below);
+            vertWall(x+1,y,y<0,y>0);
         }
         else if(x === -4){
             vertWall(x+1,y,y<0,y>0,true);
@@ -181,16 +173,8 @@ $(document).ready(function(){
     };
 
     function lightRight(x,y){
-        var above = false;
-        var below = false;
         if(barrierX[y+3][x+3] !== 0){
-            if(y < 0){
-                above = true;
-            }
-            else if(y > 0){
-                below = true;
-            };
-            vertWall(x,y,above,below);
+            vertWall(x,y,y<0,y>0);
         }
         else if(x === 4){
             vertWall(x,y,y<0,y>0,true);
@@ -237,16 +221,8 @@ $(document).ready(function(){
     };
 
     function lightDown(x,y){
-        var left = false;
-        var right = false;
         if(barrierY[x+3][y+4] !== 0){
-            if(x > 0){
-                left = true;
-            }
-            else if(x < 0){
-                right = true;
-            };
-            horiWall(x,y+1,left,right);
+            horiWall(x,y+1,x>0,x<0);
         }
         else if(y === -4){
             horiWall(x,y+1,x>0,x<0,true);
@@ -293,16 +269,8 @@ $(document).ready(function(){
     };
 
     function lightUp(x,y){
-        var left = false;
-        var right = false;
         if(barrierY[x+3][y+3] !== 0){
-            if(x > 0){
-                left = true;
-            }
-            else if(x < 0){
-                right = true;
-            };
-            horiWall(x,y,left,right);
+            horiWall(x,y,x>0,x<0);
         }
         else if(y === 4){
             horiWall(x,y,x>0,x<0,true);

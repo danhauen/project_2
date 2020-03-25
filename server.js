@@ -39,7 +39,7 @@ db.sequelize.sync(syncOptions).then(function() {
   });
 });
 
-var level0 = require("./world/level0");
-level0();
+var init = require("./world/init");
+init();
 
 module.exports = app;
