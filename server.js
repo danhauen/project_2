@@ -16,6 +16,7 @@ app.use(express.static("public"));
 require("./routes/activeApiRoute")(app);
 require("./routes/barrierApiRoute")(app);
 require("./routes/charApiRoutes.js")(app)
+require("./routes/inputApiRoute.js")(app)
 require("./routes/htmlRoutes")(app);
 require("./routes/playerRoute.js")(app);
 

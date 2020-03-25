@@ -10,6 +10,34 @@ $(document).ready(function(){
                 type: "GET"
             });
         },
+        currentKey: function() {
+            return $.ajax({
+                url: "api/inputs",
+                type: "GET"
+            });
+        },
+        inputKey: function(key){
+            $.ajax({
+                url: "api/inputs",
+                method: "POST",
+                data: key
+            });
+            var giveUp = 30;
+            var acknowledged = setInterval(function(){
+                API.currentKey().then(function(res){
+                    console.log(res.key);
+                    if (res.key === "") {
+                        draw();
+                        clearInterval(acknowledged);
+                    };
+                    if(giveUp < 0){
+                        clearInterval(acknowledged);
+                    };
+                    giveUp--;
+                });
+            }, 50);
+        },
+
     };
 
     function greySelect(x,y){
@@ -100,21 +128,11 @@ $(document).ready(function(){
         var above = false;
         var below = false;
         if(barrierX[y+3][x+4] !== 0){
-            if(x === -4){
-                if(y < 0){
-                    above = true;
-                }
-                else if(y > 0){
-                    below = true;
-                };
+            if(y < 0){
+                above = true;
             }
-            else{
-                if(y < 0){
-                    above = barrierX[y+4][x+4] !== 0 || barrierY[x+3][y+4] !== 0;
-                }
-                else if(y > 0){
-                    below = barrierX[y+2][x+4] !== 0 || barrierY[x+3][y+3] !== 0;
-                };
+            else if(y > 0){
+                below = true;
             };
             vertWall(x+1,y,above,below);
         }
@@ -144,7 +162,7 @@ $(document).ready(function(){
 
             if(y >= 0){
                 if(barrierY[x+3][y+4] !== 0){
-                    var right = barrierY[x+4][y+4] !== 0 || barrierX[y+4][x+2] !== 0;
+                    var right = barrierY[x+4][y+4] !== 0 || barrierX[y+4][x+4] !== 0;
                     horiWall(x,y+1,false,right);
                 }
                 else{
@@ -153,7 +171,7 @@ $(document).ready(function(){
             };
             if(y <= 0){
                 if(barrierY[x+3][y+3] !== 0){
-                    var right = barrierY[x+4][y+3] !== 0 || barrierX[y+2][x+2] !== 0;
+                    var right = barrierY[x+4][y+3] !== 0 || barrierX[y+2][x+4] !== 0;
                     horiWall(x,y,false,right);
                 }
                 else{
@@ -168,21 +186,11 @@ $(document).ready(function(){
         var above = false;
         var below = false;
         if(barrierX[y+3][x+3] !== 0){
-            if(x === 4){
-                if(y < 0){
-                    above = true;
-                }
-                else if(y > 0){
-                    below = true;
-                };
+            if(y < 0){
+                above = true;
             }
-            else{
-                if(y < 0){
-                    above = barrierX[y+4][x+3] !== 0 || barrierY[x+3][y+4] !== 0;
-                }
-                else if(y > 0){
-                    below = barrierX[y+2][x+3] !== 0 || barrierY[x+3][y+3] !== 0;
-                };
+            else if(y > 0){
+                below = true;
             };
             vertWall(x,y,above,below);
         }
@@ -236,21 +244,11 @@ $(document).ready(function(){
         var left = false;
         var right = false;
         if(barrierY[x+3][y+4] !== 0){
-            if(y === -4){
-                if(x > 0){
-                    left = true;
-                }
-                else if(x < 0){
-                    right = true;
-                };
+            if(x > 0){
+                left = true;
             }
-            else{
-                if(x > 0){
-                    left = barrierY[x+2][y+4] !== 0 || barrierX[y+3][x+3] !== 0;
-                }
-                else if(x < 0){
-                    right = barrierY[x+4][y+4] !== 0 || barrierX[y+3][x+4] !== 0;
-                };
+            else if(x < 0){
+                right = true;
             };
             horiWall(x,y+1,left,right);
         }
@@ -304,21 +302,11 @@ $(document).ready(function(){
         var left = false;
         var right = false;
         if(barrierY[x+3][y+3] !== 0){
-            if(y === 4){
-                if(x > 0){
-                    left = true;
-                }
-                else if(x < 0){
-                    right = true;
-                };
+            if(x > 0){
+                left = true;
             }
-            else{
-                if(x > 0){
-                    left = barrierY[x+2][y+3] !== 0 || barrierX[y+3][x+3] !== 0;
-                }
-                else if(x < 0){
-                    right = barrierY[x+4][y+3] !== 0 || barrierX[y+3][x+4] !== 0;
-                };
+            else if(x < 0){
+                right = true;
             };
             horiWall(x,y,left,right);
         }
@@ -375,26 +363,6 @@ $(document).ready(function(){
         lightRight(1,0);
         lightDown(0,-1);
         lightUp(0,1);
-        for(var i = 0; i <= 7; i++){
-            for(var j = 0; j <= 7; j++){
-                var black = false;
-                var notBlack = false;
-                for(var k = 0; k <= 2; k += 2){
-                    for(var l = 0; l<= 2; l += 2){
-                        var pixel = ctx.getImageData(70*i+2+k+l,70*j+4+k-l,1,1);
-                        if(!pixel.data[0] && !pixel.data[1] && !pixel.data[2]){
-                            black = true;
-                        }
-                        else{
-                            notBlack = true;
-                        };
-                    };
-                };
-                if(black && notBlack){
-                    makeRectangle(70*i,70*i+8,498-70*j,490-70*j,"#000000");
-                };
-            };
-        };
     };
 
     var barrierX = [[],[],[],[],[],[],[]];
@@ -409,7 +377,29 @@ $(document).ready(function(){
         draw();
     });
 
+    var activeKeys = [];
     $("html").keydown(function(key){
-        console.log(key.originalEvent);
+        var key = key.originalEvent.key;
+        if(["Meta","Alt","Control","CapsLock","Tab","Shift"].indexOf(key) < 0){
+            if(activeKeys.indexOf(key) < 0){
+                activeKeys.push(key);
+            };
+        };
+    });
+    $("html").keyup(function(key){
+        var key = key.originalEvent.key;
+        if(["Meta","Alt","Control","CapsLock","Tab","Shift"].indexOf(key) < 0){
+            var index = activeKeys.indexOf(key)
+            if(index < 0){
+                throw "How'd you un-press a key you never pressed?";
+            }
+            else if(activeKeys.length === 1){
+                activeKeys.pop();
+                API.inputKey(key);
+            }
+            else{
+                activeKeys.splice(index,1);
+            };
+        };
     });
 });
