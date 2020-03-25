@@ -15,13 +15,13 @@ $(document).ready(function(){
     function greySelect(x,y){
         switch(Math.max(Math.abs(x),Math.abs(y))){
             case 0:
-                return "#777777";
-            case 1:
                 return "#666666";
-            case 2:
+            case 1:
                 return "#555555";
-            case 3:
+            case 2:
                 return "#444444";
+            case 3:
+                return "#333333";
             default:
                 break;
         };
@@ -30,10 +30,12 @@ $(document).ready(function(){
     function floorSelect(dist){
         switch(dist){
             case 1:
-                return "#888888";
+                return "#999999";
             case 2:
-                return "#777777";
+                return "#888888";
             case 3:
+                return "#777777";
+            case 4:
                 return "#666666";
             default:
                 break;
@@ -48,7 +50,7 @@ $(document).ready(function(){
         ctx.closePath();
     };
 
-    function horiWall(x,y,left,right){
+    function horiWall(x,y,left,right,edge = false){
         ctx.beginPath();
         if(y > 0){
             left = !left;
@@ -61,7 +63,12 @@ $(document).ready(function(){
         if(y > 0){
             y--;
         };
-        ctx.fillStyle = greySelect(x,y);
+        if(edge){
+            ctx.fillStyle = floorSelect(4);
+        }
+        else{
+            ctx.fillStyle = greySelect(x,y);
+        };
         ctx.fill();
         ctx.closePath();
     };
@@ -78,9 +85,9 @@ $(document).ready(function(){
         ctx.lineTo(70*(x+3)+8,498-70*(y+3)-8+below*8);
         if(x > 0){
             x--;
-        }
+        };
         if(edge){
-            ctx.fillStyle = "#555555";
+            ctx.fillStyle = floorSelect(4);
         }
         else{
             ctx.fillStyle = greySelect(x,y);
@@ -89,124 +96,285 @@ $(document).ready(function(){
         ctx.closePath();
     };
 
-    function lightRight(x,y,above,below){
-        makeRectangle(70*(x+3),70*(x+4),70*(y+3)+8-8*below,70*(y+4)+8*above,floorSelect(x));
-
-        function helper(up){
-            ctx.beginPath();
-            ctx.moveTo(70*(x+3),498-70*(y+3+up)-8+8*up);
-            ctx.lineTo(70*(x+4),498-70*(y+3+up)-8+8*up);
-            ctx.lineTo(70*(x+4),498-70*(y+2+3*up)-8+8*up);
-            ctx.fillStyle = floorSelect(x);
-            ctx.fill();
-            ctx.closePath();
-
-            if(barrierX[y+2+2*up][x+4] !== 0){
-                above = false;
-                below = barrierX[y+3][x+4];
-                if(x < 3){
-                    below = below || barrierY[x+4][y+4];
-                };
-                if(!up){
-                    [above,below] = [below,above];
-                };
-                vertWall(x+1,y-1+2*up,above,below);
-            }
-            else if(x < 3){
-                lightRight(x+1,y-1+2*up,!up,up);
-            }
-            else{
-                vertWall(x+1,y-1+2*up,y<1-2*up,y>1-2*up,true);
-            };
-        };
-
-        if(!below){
-            if(barrierY[x+3][y+3] !== 0){
-                var left = barrierY[x+2][y+3] !== 0 || barrierX[y+2][x+3] !== 0;
-                horiWall(x,y,left,false);
-            }
-            else{
-                helper(false);
-            };
-        };
-        if(!above){
-            if(barrierY[x+3][y+4] !== 0){
-                var left = barrierY[x+2][y+4] !== 0 || barrierX[y+4][x+3] !== 0;
-                horiWall(x,y+1,left,false);
-            }
-            else{
-                helper(true);
-            };
-        };
-
+    function lightLeft(x,y){
+        var above = false;
+        var below = false;
         if(barrierX[y+3][x+4] !== 0){
-            above = false;
-            below = false;
-            if(y > 0){
-                below = barrierX[y+2][x+4] !== 0;
-                if(x < 3){
-                    below = below || barrierY[x+4][y+3];
+            if(x === -4){
+                if(y < 0){
+                    above = true;
+                }
+                else if(y > 0){
+                    below = true;
                 };
             }
-            else if(y < 0){
-                above = barrierX[y+4][x+4] !== 0;
-                if(x < 3){
-                    above = above || barrierY[x+4][y+4];
+            else{
+                if(y < 0){
+                    above = barrierX[y+4][x+4] !== 0 || barrierY[x+3][y+4] !== 0;
+                }
+                else if(y > 0){
+                    below = barrierX[y+2][x+4] !== 0 || barrierY[x+3][y+3] !== 0;
                 };
             };
             vertWall(x+1,y,above,below);
         }
-        else if(x < 3){
-            lightRight(x+1,y,y<0,y>0);
+        else if(x === -4){
+            vertWall(x+1,y,y<0,y>0,true);
         }
         else{
-            vertWall(x+1,y,y<0,y>0,true);
+            makeRectangle(70*(x+3)+8,70*(x+4)+8,70*(y+3)+8,70*(y+4),floorSelect(-x));
+
+            function helper(up){
+                ctx.beginPath();
+                ctx.moveTo(70*(x+4)+8,498-70*(y+3+up)-8+8*up);
+                ctx.lineTo(70*(x+3)+8,498-70*(y+3+up)-8+8*up);
+                ctx.lineTo(70*(x+3)+8,498-70*(y+2+3*up)-8+8*up);
+                ctx.fillStyle = floorSelect(-x);
+                ctx.fill();
+                ctx.closePath();
+                ctx.beginPath();
+                ctx.moveTo(70*(x+3)+8,498-70*(y+3+up)-8+8*up);
+                ctx.lineTo(70*(x+3)+8,498-70*(y+3+up)-8*up);
+                ctx.lineTo(70*(x+3),498-70*(y+3+up)-8*up);
+                ctx.fillStyle = floorSelect(1-x);
+                ctx.fill();
+                ctx.closePath();
+                lightLeft(x-1,y-1+2*up);
+            };
+
+            if(y >= 0){
+                if(barrierY[x+3][y+4] !== 0){
+                    var right = barrierY[x+4][y+4] !== 0 || barrierX[y+4][x+2] !== 0;
+                    horiWall(x,y+1,false,right);
+                }
+                else{
+                    helper(true);
+                };
+            };
+            if(y <= 0){
+                if(barrierY[x+3][y+3] !== 0){
+                    var right = barrierY[x+4][y+3] !== 0 || barrierX[y+2][x+2] !== 0;
+                    horiWall(x,y,false,right);
+                }
+                else{
+                    helper(false);
+                };
+            };
+            lightLeft(x-1,y);
+        };
+    };
+
+    function lightRight(x,y){
+        var above = false;
+        var below = false;
+        if(barrierX[y+3][x+3] !== 0){
+            if(x === 4){
+                if(y < 0){
+                    above = true;
+                }
+                else if(y > 0){
+                    below = true;
+                };
+            }
+            else{
+                if(y < 0){
+                    above = barrierX[y+4][x+3] !== 0 || barrierY[x+3][y+4] !== 0;
+                }
+                else if(y > 0){
+                    below = barrierX[y+2][x+3] !== 0 || barrierY[x+3][y+3] !== 0;
+                };
+            };
+            vertWall(x,y,above,below);
+        }
+        else if(x === 4){
+            vertWall(x,y,y<0,y>0,true);
+        }
+        else{
+            makeRectangle(70*(x+3),70*(x+4),70*(y+3)+8,70*(y+4),floorSelect(x));
+
+            function helper(up){
+                ctx.beginPath();
+                ctx.moveTo(70*(x+3),498-70*(y+3+up)-8+8*up);
+                ctx.lineTo(70*(x+4),498-70*(y+3+up)-8+8*up);
+                ctx.lineTo(70*(x+4),498-70*(y+2+3*up)-8+8*up);
+                ctx.fillStyle = floorSelect(x);
+                ctx.fill();
+                ctx.closePath();
+                ctx.beginPath();
+                ctx.moveTo(70*(x+4),498-70*(y+3+up)-8+8*up);
+                ctx.lineTo(70*(x+4),498-70*(y+3+up)-8*up);
+                ctx.lineTo(70*(x+4)+8,498-70*(y+3+up)-8*up);
+                ctx.fillStyle = floorSelect(x+1);
+                ctx.fill();
+                ctx.closePath();
+                lightRight(x+1,y-1+2*up);
+            };
+
+            if(y >= 0){
+                if(barrierY[x+3][y+4] !== 0){
+                    var left = barrierY[x+2][y+4] !== 0 || barrierX[y+4][x+3] !== 0;
+                    horiWall(x,y+1,left,false);
+                }
+                else{
+                    helper(true);
+                };
+            };
+            if(y <= 0){
+                if(barrierY[x+3][y+3] !== 0){
+                    var left = barrierY[x+2][y+3] !== 0 || barrierX[y+2][x+3] !== 0;
+                    horiWall(x,y,left,false);
+                }
+                else{
+                    helper(false);
+                };
+            };
+            lightRight(x+1,y);
+        };
+    };
+
+    function lightDown(x,y){
+        var left = false;
+        var right = false;
+        if(barrierY[x+3][y+4] !== 0){
+            if(y === -4){
+                if(x > 0){
+                    left = true;
+                }
+                else if(x < 0){
+                    right = true;
+                };
+            }
+            else{
+                if(x > 0){
+                    left = barrierY[x+2][y+4] !== 0 || barrierX[y+3][x+3] !== 0;
+                }
+                else if(x < 0){
+                    right = barrierY[x+4][y+4] !== 0 || barrierX[y+3][x+4] !== 0;
+                };
+            };
+            horiWall(x,y+1,left,right);
+        }
+        else if(y === -4){
+            horiWall(x,y+1,x>0,x<0,true);
+        }
+        else{
+            makeRectangle(70*(x+3)+8,70*(x+4),70*(y+3)+8,70*(y+4)+8,floorSelect(-y));
+
+            function helper(right){
+                ctx.beginPath();
+                ctx.moveTo(70*(x+3+right)+8-8*right,498-70*(y+4)-8);
+                ctx.lineTo(70*(x+3+right)+8-8*right,498-70*(y+3)-8);
+                ctx.lineTo(70*(x+2+3*right)+8-8*right,498-70*(y+3)-8);
+                ctx.fillStyle = floorSelect(-y);
+                ctx.fill();
+                ctx.closePath();
+                ctx.beginPath();
+                ctx.moveTo(70*(x+3+right)+8-8*right,498-70*(y+3)-8);
+                ctx.lineTo(70*(x+3+right)+8*right,498-70*(y+3)-8);
+                ctx.lineTo(70*(x+3+right)+8*right,498-70*(y+3));
+                ctx.fillStyle = floorSelect(1-y);
+                ctx.fill();
+                ctx.closePath();
+                lightDown(x-1+2*right,y-1);
+            };
+
+            if(x >= 0){
+                if(barrierX[y+3][x+4] !== 0){
+                    var above = barrierX[y+4][x+4] !== 0 || barrierY[x+4][y+4] !== 0;
+                    vertWall(x+1,y,above,false);
+                }
+                else{
+                    helper(true);
+                };
+            };
+            if(x <= 0){
+                if(barrierX[y+3][x+3] !== 0){
+                    var above = barrierX[y+4][x+3] !== 0 || barrierY[x+2][y+4] !== 0;
+                    vertWall(x,y,above,false);
+                }
+                else{
+                    helper(false);
+                };
+            };
+            lightDown(x,y-1);
+        };
+    };
+
+    function lightUp(x,y){
+        var left = false;
+        var right = false;
+        if(barrierY[x+3][y+3] !== 0){
+            if(y === 4){
+                if(x > 0){
+                    left = true;
+                }
+                else if(x < 0){
+                    right = true;
+                };
+            }
+            else{
+                if(x > 0){
+                    left = barrierY[x+2][y+3] !== 0 || barrierX[y+3][x+3] !== 0;
+                }
+                else if(x < 0){
+                    right = barrierY[x+4][y+3] !== 0 || barrierX[y+3][x+4] !== 0;
+                };
+            };
+            horiWall(x,y,left,right);
+        }
+        else if(y === 4){
+            horiWall(x,y,x>0,x<0,true);
+        }
+        else{
+            makeRectangle(70*(x+3)+8,70*(x+4),70*(y+3),70*(y+4),floorSelect(y));
+
+            function helper(right){
+                ctx.beginPath();
+                ctx.moveTo(70*(x+3+right)+8-8*right,498-70*(y+3));
+                ctx.lineTo(70*(x+3+right)+8-8*right,498-70*(y+4));
+                ctx.lineTo(70*(x+2+3*right)+8-8*right,498-70*(y+4));
+                ctx.fillStyle = floorSelect(y);
+                ctx.fill();
+                ctx.closePath();
+                ctx.beginPath();
+                ctx.moveTo(70*(x+3+right)+8-8*right,498-70*(y+4));
+                ctx.lineTo(70*(x+3+right)+8*right,498-70*(y+4));
+                ctx.lineTo(70*(x+3+right)+8*right,498-70*(y+4)-8);
+                ctx.fillStyle = floorSelect(y+1);
+                ctx.fill();
+                ctx.closePath();
+                lightUp(x-1+2*right,y+1);
+            };
+
+            if(x >= 0){
+                if(barrierX[y+3][x+4] !== 0){
+                    var below = barrierX[y+2][x+4] !== 0 || barrierY[x+4][y+3] !== 0;
+                    vertWall(x+1,y,false,below);
+                }
+                else{
+                    helper(true);
+                };
+            };
+            if(x <= 0){
+                if(barrierX[y+3][x+3] !== 0){
+                    var below = barrierX[y+2][x+3] !== 0 || barrierY[x+2][y+3] !== 0;
+                    vertWall(x,y,false,below);
+                }
+                else{
+                    helper(false);
+                };
+            };
+            lightUp(x,y+1);
         };
     };
 
     function draw(){
         makeRectangle(0,498,0,498,"#000000");
         makeRectangle(218,280,218,280,"#F8C377");
-        if(barrierX[3][3] !== 0){
-            vertWall(0,0,false,false);
-            switch(barrierX[3][3]){
-                default:
-                    break;
-            };
-        }
-        else{
-            lightLeft(-1,0,false,false);
-        };
-        if(barrierX[3][4] !== 0){
-            vertWall(1,0,false,false);
-            switch(barrierX[3][4]){
-                default:
-                    break;
-            };
-        }
-        else{
-            lightRight(1,0,false,false);
-        };
-        if(barrierY[3][3] !== 0){
-            horiWall(0,0,false,false);
-            switch(barrierY[3][3]){
-                default:
-                    break;
-            };
-        }
-        else{
-            lightDown(0,-1,false,false);
-        };
-        if(barrierY[3][4] !== 0){
-            horiWall(0,1,false,false);
-            switch(barrierY[3][4]){
-                default:
-                    break;
-            };
-        }
-        else{
-            lightUp(1,0,false,false);
-        };
+        lightLeft(-1,0);
+        lightRight(1,0);
+        lightDown(0,-1);
+        lightUp(0,1);
     };
 
     var barrierX = [[],[],[],[],[],[],[]];

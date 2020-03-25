@@ -22,8 +22,8 @@ module.exports = function(){
     });
     db.activeObjects.create({
         name: "PC",
-        xPos: 0,
-        yPos: 0,
+        xPos: 1,
+        yPos: 2,
         levelOnMap: 0,
         charType: 1,
         currentHP: 1,
