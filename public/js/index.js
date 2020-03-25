@@ -370,11 +370,31 @@ $(document).ready(function(){
 
     function draw(){
         makeRectangle(0,498,0,498,"#000000");
-        makeRectangle(218,280,218,280,"#F8C377");
+        makeRectangle(218,280,218,280,"#F7B75F");
         lightLeft(-1,0);
         lightRight(1,0);
         lightDown(0,-1);
         lightUp(0,1);
+        for(var i = 0; i <= 7; i++){
+            for(var j = 0; j <= 7; j++){
+                var black = false;
+                var notBlack = false;
+                for(var k = 0; k <= 2; k += 2){
+                    for(var l = 0; l<= 2; l += 2){
+                        var pixel = ctx.getImageData(70*i+2+k+l,70*j+4+k-l,1,1);
+                        if(!pixel.data[0] && !pixel.data[1] && !pixel.data[2]){
+                            black = true;
+                        }
+                        else{
+                            notBlack = true;
+                        };
+                    };
+                };
+                if(black && notBlack){
+                    makeRectangle(70*i,70*i+8,498-70*j,490-70*j,"#000000");
+                };
+            };
+        };
     };
 
     var barrierX = [[],[],[],[],[],[],[]];
@@ -387,5 +407,9 @@ $(document).ready(function(){
             barrierY[index + 3] = barrier.slice(9);
         };
         draw();
+    });
+
+    $("html").keydown(function(key){
+        console.log(key.originalEvent);
     });
 });
