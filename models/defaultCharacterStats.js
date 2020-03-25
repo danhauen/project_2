@@ -9,11 +9,11 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
     },
     armor: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     weapon: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allownull: false,
     },
     HPTotal: {

@@ -35,7 +35,7 @@ $(document).ready(function(){
                     };
                     giveUp--;
                 });
-            }, 50);
+            }, 10);
         },
 
     };
@@ -162,8 +162,7 @@ $(document).ready(function(){
 
             if(y >= 0){
                 if(barrierY[x+3][y+4] !== 0){
-                    var right = barrierY[x+4][y+4] !== 0 || barrierX[y+4][x+4] !== 0;
-                    horiWall(x,y+1,false,right);
+                    horiWall(x,y+1,false,true);
                 }
                 else{
                     helper(true);
@@ -171,8 +170,7 @@ $(document).ready(function(){
             };
             if(y <= 0){
                 if(barrierY[x+3][y+3] !== 0){
-                    var right = barrierY[x+4][y+3] !== 0 || barrierX[y+2][x+4] !== 0;
-                    horiWall(x,y,false,right);
+                    horiWall(x,y,false,true);
                 }
                 else{
                     helper(false);
@@ -220,8 +218,7 @@ $(document).ready(function(){
 
             if(y >= 0){
                 if(barrierY[x+3][y+4] !== 0){
-                    var left = barrierY[x+2][y+4] !== 0 || barrierX[y+4][x+3] !== 0;
-                    horiWall(x,y+1,left,false);
+                    horiWall(x,y+1,true,false);
                 }
                 else{
                     helper(true);
@@ -229,8 +226,7 @@ $(document).ready(function(){
             };
             if(y <= 0){
                 if(barrierY[x+3][y+3] !== 0){
-                    var left = barrierY[x+2][y+3] !== 0 || barrierX[y+2][x+3] !== 0;
-                    horiWall(x,y,left,false);
+                    horiWall(x,y,true,false);
                 }
                 else{
                     helper(false);
@@ -278,8 +274,7 @@ $(document).ready(function(){
 
             if(x >= 0){
                 if(barrierX[y+3][x+4] !== 0){
-                    var above = barrierX[y+4][x+4] !== 0 || barrierY[x+4][y+4] !== 0;
-                    vertWall(x+1,y,above,false);
+                    vertWall(x+1,y,true,false);
                 }
                 else{
                     helper(true);
@@ -287,8 +282,7 @@ $(document).ready(function(){
             };
             if(x <= 0){
                 if(barrierX[y+3][x+3] !== 0){
-                    var above = barrierX[y+4][x+3] !== 0 || barrierY[x+2][y+4] !== 0;
-                    vertWall(x,y,above,false);
+                    vertWall(x,y,true,false);
                 }
                 else{
                     helper(false);
@@ -336,8 +330,7 @@ $(document).ready(function(){
 
             if(x >= 0){
                 if(barrierX[y+3][x+4] !== 0){
-                    var below = barrierX[y+2][x+4] !== 0 || barrierY[x+4][y+3] !== 0;
-                    vertWall(x+1,y,false,below);
+                    vertWall(x+1,y,false,true);
                 }
                 else{
                     helper(true);
@@ -345,8 +338,7 @@ $(document).ready(function(){
             };
             if(x <= 0){
                 if(barrierX[y+3][x+3] !== 0){
-                    var below = barrierX[y+2][x+3] !== 0 || barrierY[x+2][y+3] !== 0;
-                    vertWall(x,y,false,below);
+                    vertWall(x,y,false,true);
                 }
                 else{
                     helper(false);

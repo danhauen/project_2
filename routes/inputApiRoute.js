@@ -4,15 +4,20 @@ var grid = require("./../world/grid");
 var facing = 0;
 
 module.exports = function(app) {
+    function updateMap(){
+        db.inputs.update({ key: "" },{ where: { id: 1 } });
+    };
+
     function move(){
         var barrier = grid.findBarrier(x+(facing===1),y+(facing===3),facing<2);
         if(barrier === 0){
             db.activeObjects.update({
                 xPos: x - (facing === 0) + (facing === 1),
                 yPos: y - (facing === 2) + (facing === 3),
-            },{ where: { name: "PC" } }).then(function(){
-                db.inputs.update({ key: "" },{ where: { id: 1 } });
-            });
+            },{ where: { name: "PC" } }).then(updateMap());
+        }
+        else{
+            updateMap();
         };
     };
 
@@ -50,6 +55,9 @@ module.exports = function(app) {
                 else if(req === "w" || req === "ArrowUp"){
                     facing = 3;
                     move();
+                }
+                else{
+                    updateMap();
                 };
             });
         });
