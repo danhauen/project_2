@@ -16,32 +16,65 @@
   </head>
 
   <body>
-    <div class="jumbotron jumbotron-fluid" id= "game-title">
-      <div class="container">
-        <h1 class="display-4">InterestQuest</h1>
-      </div>
-    </div>
-
-    <div class="container-fluid">
-
-      <div class="row" id="row1">
-        <div class="col-lg" id="game-canvas">
-          <div class="container-fluid" id="screen">
-            <canvas id="gameCanvas" width=498 height=498> </canvas>
-          </div>
+      <br>
+      <!-- banner header -->
+        <div class="container container-fluid" id= "game-title">
+          <img class="img-fluid" src="https://github.com/danhauen/Psychic-Game/blob/master/assets/images/banner.png?raw=true" alt="banner" width= "800";>
+          <h1 class="banner">Interest Que$t</h1>
         </div>
-      </div>
+      <br>
 
+
+
+
+      <div class="container col-12">
+        <div class="row d-flex justify-content-between">
+
+
+          <!-- left recent players scroll -->
+              <div class="container container-fluid col-3" id= "recent-players">
+                <img class="img-fluid" src="https://github.com/danhauen/Psychic-Game/blob/master/assets/images/scroll.png?raw=true" alt="banner" width= "500";>
+                <h4 class="players">Recent Player$</h4>
+                <!-- recent players list -->
+
+
+              </div>
+
+
+                        <!-- game canvas -->
+                          <div class="col-5" id="game-canvas">
+                            <div class="container-fluid" id="screen">
+                              <canvas id="gameCanvas" width=498 height=498> </canvas>
+                            </div>
+                          </div>
+          
+          
+          <!-- right high scores scroll -->
+          <div class="container container-fluid col-3" id= "high-scores">
+            <img class="img-fluid" src="https://github.com/danhauen/Psychic-Game/blob/master/assets/images/scroll.png?raw=true" alt="banner";>
+            <h3 class="scores">High Score$</h3>
+            <!-- high scores list -->
+
+
+          </div>          
+
+
+
+
+
+          </div>              
+        </div> 
+      <!-- message box -->
       <div class= "row">
         <div class="container-fluid" id="msg-container">
           <div class= "col-lg" id="messages"></div>
         </div>
       </div>
       
-      <div class= "row">
+      <!-- <div class= "row">
         <div class="col-sm panel"  id="recent-players"> Recent Players </div>
         <div class="col-sm panel" id="high-scores"> High Scores </div>
-      </div>
+      </div> -->
 
     </div>
   
