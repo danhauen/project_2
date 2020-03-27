@@ -1,28 +1,45 @@
 body {
-  background-color: black;
+  background-color: rgb(37, 37, 37);
 }
 
 div {
   font-family: 'MedievalSharp', cursive;
 }
 
-
 h1{
-  text-align: center; 
+  text-align: center;
+  font-size: 60px; 
 }
 
-
-.jumbotron{
-  background-image: url(../assets/background.png);
-
+.banner {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
+.players {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.scores {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#game-title {
+  position: relative;
+  text-align: center;
+}
 
 .list-group-item {
   line-height: 2.5;
 }
-
-
 
 .panel {
   color: white;
@@ -30,8 +47,7 @@ h1{
   text-align: center;
   border-width: 2px;
   border-style: solid; 
-  border-color: black;
-  
+  border-color: black; 
 }
 
 #msg-container{
@@ -45,18 +61,7 @@ h1{
   height: 100%;
   padding: 10%;
   background-image: url(../assets/background.png);
-  
 }
-
-
-#recent-players{
-  float: left;
-}
-
-#high-scores{
-  float: right;
-}
-
 
 #gameCanvas{
   display: block;
