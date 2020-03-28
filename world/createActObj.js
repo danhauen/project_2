@@ -1,7 +1,7 @@
 var db = require("../models");
 
 module.exports = function(name, xPos, yPos, level, charType, objectState = 1){
-    db.defaultCharacterStats.findOne({ where: { name : charType } }).then(function(dStats){
+    db.defaultStats.findOne({ where: { name : charType } }).then(function(dStats){
         db.activeObjects.create({
             name: name,
             xPos: xPos,

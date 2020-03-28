@@ -1,22 +1,30 @@
 var db = require("../models");
 
-var grid = require("./../world/grid");
+var grid = require("../world/grid");
 var facing = 0;
+var message = "";
 
 module.exports = function(app) {
     function updateMap(){
-        db.inputs.update({ key: "" },{ where: { id: 1 } });
+        db.inputs.update({ key: "", message: message },{ where: { id: 1 } });
     };
 
     function move(){
         var barrier = grid.findBarrier(x+(facing===1),y+(facing===3),facing<2);
         if(barrier === 0){
-            db.activeObjects.update({
-                xPos: x - (facing === 0) + (facing === 1),
-                yPos: y - (facing === 2) + (facing === 3),
-            },{ where: { name: "PC" } }).then(updateMap());
+            var xPos = x - (facing === 0) + (facing === 1);
+            var yPos = y - (facing === 2) + (facing === 3);
+            db.activeObjects.findAll({where: {levelOnMap: 0, xPos: xPos, yPos: yPos}}).then(function(response){
+                if(response.length){
+                    //Ran into something, and are now facing it
+                }
+                else{
+                    db.activeObjects.update({xPos: xPos, yPos: yPos},{ where: { name: "PC" } }).then(updateMap());
+                };
+            });
         }
         else{
+            //Ran into a wall
             updateMap();
         };
     };

@@ -13,12 +13,12 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Routes
-require("./routes/activeApiRoute")(app);
-require("./routes/barrierApiRoute")(app);
-require("./routes/charApiRoutes.js")(app)
-require("./routes/inputApiRoute.js")(app)
+require("./routes/activeObjectRoutes")(app);
+require("./routes/barrierRoutes")(app);
+require("./routes/defaultStatRoutes.js")(app)
+require("./routes/inputRoutes.js")(app)
 require("./routes/htmlRoutes")(app);
-require("./routes/playerRoute.js")(app);
+require("./routes/playerRoutes.js")(app);
 
 var syncOptions = { force: false };
 

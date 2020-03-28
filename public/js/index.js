@@ -4,6 +4,13 @@ $(document).ready(function(){
 
 // The API object contains methods for each kind of request we'll make
     var API = {
+        findObjects: function(){
+            return $.ajax({
+                url: "api/activeObjects/coords",
+                type: "GET"
+            });
+        },
+
         refreshBarrier: function() {
             return $.ajax({
                 url: "api/barriers",
@@ -16,6 +23,7 @@ $(document).ready(function(){
                 type: "GET"
             });
         },
+
         inputKey: function(key){
             $.ajax({
                 url: "api/inputs",
@@ -25,15 +33,14 @@ $(document).ready(function(){
             var giveUp = 30;
             var acknowledged = setInterval(function(){
                 API.currentKey().then(function(res){
-                    console.log(res.key);
+                    giveUp--;
+                    if(giveUp < 0){
+                        clearInterval(acknowledged);
+                    };
                     if (res.key === "") {
                         showMap();
                         clearInterval(acknowledged);
                     };
-                    if(giveUp < 0){
-                        clearInterval(acknowledged);
-                    };
-                    giveUp--;
                 });
             }, 10);
         },
@@ -319,10 +326,57 @@ $(document).ready(function(){
     function draw(){
         makeRectangle(0,498,0,498,"#000000");
         makeRectangle(218,280,218,280,"#F7B75F");
+        var player = document.getElementById("player");
+        ctx.drawImage(player,218,218);
+
         lightLeft(-1,0);
         lightRight(1,0);
         lightDown(0,-1);
         lightUp(0,1);
+        API.findObjects().then(function(response){
+            console.log(response);
+            for(i in response){
+                var picture = document.getElementById(response[i].name);
+                var x = response[i].xPos;
+                var y = response[i].yPos;
+                var seen = [false,false,false,false];
+                for(j in seen){
+                    var pixel = ctx.getImageData(70*(x+3)+25+17*(j<2)+18*(j%2),498-70*(y+3)-43+18*(j<2)-17*(j%2),1,1).data;
+                    seen[j] = pixel[0] !== 0 || pixel[1] !== 0 || pixel[2] !== 0;
+                };
+                var index = [0,2,4].indexOf(0 + seen[0] + seen[1] + seen[2] + seen[3]);
+                if(index < 0){
+                    throw "Map error!";
+                }
+                else if(index !== 0){
+                    ctx.drawImage(picture, 70*(x+3) + 8, 498 - 70*(y+3) - 78);
+                    if(index === 1){
+                        if((seen[0] && seen[3]) || (seen[1] && seen[2])){
+                            throw "Map error!";
+                        };
+                        ctx.beginPath();
+                        if(seen[2] || pixel[3]){
+                            ctx.moveTo(70*(x+3) + 8, 498 - 70*(y+3) - 8);
+                        }
+                        else{
+                            ctx.moveTo(70*(x+4) + 8, 498 - 70*(y+3) - 8);
+                        };
+                        if(seen[3]){
+                            ctx.lineTo(70*(x+4) + 8, 498 - 70*(y+3) - 8);
+                        };
+                        if(seen[0] || seen[1]){
+                            ctx.lineTo(70*(x+4) + 8, 498 - 70*(y+3) - 78);
+                        };
+                        if(seen[0] || seen[2]){
+                            ctx.lineTo(70*(x+3) + 8, 498 - 70*(y+3) - 78);
+                        };
+                        ctx.fillStyle = "#000000";
+                        ctx.fill();
+                        ctx.closePath();
+                    };
+                };
+            };
+        });
     };
 
     var barrierX = [[],[],[],[],[],[],[]];
