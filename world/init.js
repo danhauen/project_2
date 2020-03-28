@@ -20,24 +20,24 @@ module.exports = function(){
         where: {},
         truncate: true
     });
-    db.inputs.create({key: ""});
+    db.inputs.create({key: "", message: ""});
 
     db.activeObjects.destroy({
         where: {},
         truncate: true
     });
-    db.defaultCharacterStats.destroy({
+    db.defaultStats.destroy({
         where: {},
         truncate: true
     });
-    db.defaultCharacterStats.create({
+    db.defaultStats.create({
         name: "Peasant",
         description: "Mostly Harmless",
         armor: 0,
         weapon: 0,
         HPTotal: 30
     }).then(function(){
-        db.defaultCharacterStats.create({
+        db.defaultStats.create({
             name: "Slime",
             description: "A small, immobile chunk of sludge. It doesn't look dangerous, but you're going to pretend it is, "
                        + "to make yourself feel better about what you're going to try to do to it.",

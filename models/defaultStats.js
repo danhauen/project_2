@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-  var defaultCharacterStats = sequelize.define("defaultCharacterStats", {
+  var defaultStats = sequelize.define("defaultStats", {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -21,5 +21,5 @@ module.exports = function (sequelize, DataTypes) {
       allownull: false,
     }
   });
-  return defaultCharacterStats;
+  return defaultStats;
 };

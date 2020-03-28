@@ -1,5 +1,5 @@
 var db = require("../models");
-var grid = require("./../world/grid");
+var grid = require("../world/grid");
 
 module.exports = function (app) {
   app.get("/api/barriers", function (req, res) {
